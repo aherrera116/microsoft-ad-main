@@ -503,7 +503,7 @@ Resources:
         PublicSubnet2CIDR: !Ref 'PublicSubnet2CIDR'
         VPCCIDR: !Ref 'VPCCIDR'
   ADStack:
-    DependsOn: VPCStack
+    # DependsOn: VPCStack
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL:
@@ -551,7 +551,7 @@ Resources:
         QSS3BucketRegion: !Ref 'QSS3BucketRegion'
         QSS3KeyPrefix: !Ref 'QSS3KeyPrefix'
   RDGWStack:
-    DependsOn: ADStack
+    # DependsOn: ADStack
     Condition: IncludeRDGW
     Type: AWS::CloudFormation::Stack
     Properties:
