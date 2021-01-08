@@ -502,7 +502,7 @@ Resources:
             description: "Stack Name Input for cfn resource signal"
             type: "String"
           URLSuffix:
-            default: "amazonaws.com"
+            default: "amazonaws.com" # github.com
             description: "AWS URL suffix"
             type: "String"
         mainSteps:
