@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: '2010-09-09'
 Description: This template creates a VPC infrastructure for a multi-AZ,
   multi-tier deployment of a Windows based Application infrastructure. It
   installs 2 Windows 2019 Active Directory Domain Controllers into private
@@ -159,17 +159,16 @@ Metadata:
         default: Quick Start S3 Key Prefix
 Parameters:
   AvailabilityZones:
-    Description: "List of Availability Zones to use for the subnets in the VPC.
-      Note: The logical order is preserved and only 2 AZs are used for this
-      deployment."
+    Description: 'List of Availability Zones to use for the subnets in the VPC. Note:
+      The logical order is preserved and only 2 AZs are used for this deployment.'
     Type: List<AWS::EC2::AvailabilityZone::Name>
   NumberOfAZs:
     AllowedValues:
-      - "2"
-      - "3"
-    Default: "2"
-    Description: Number of Availability Zones to use in the VPC. This must match
-      your selections in the list of Availability Zones parameter.
+      - '2'
+      - '3'
+    Default: '2'
+    Description: Number of Availability Zones to use in the VPC. This must match your
+      selections in the list of Availability Zones parameter.
     Type: String
   VPCCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
@@ -179,9 +178,9 @@ Parameters:
     Type: String
   DHCPOptionSet:
     AllowedValues:
-      - Yes
-      - No
-    Default: Yes
+      - 'Yes'
+      - 'No'
+    Default: 'Yes'
     Description: Do you want to create and apply a new DHCP Options Set
     Type: String
   PrivateSubnet1CIDR:
@@ -197,24 +196,27 @@ Parameters:
     Description: CIDR block for private subnet 2 located in Availability Zone 2.
     Type: String
   PrivateSubnet3CIDR:
-    Default: ""
+    Default: ''
     Description: CIDR block for private subnet 3 located in Availability Zone 3.
     Type: String
   PublicSubnet1CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 11.0.128.0/20
-    Description: CIDR Block for the public DMZ subnet 1 located in Availability Zone 1
+    Description: CIDR Block for the public DMZ subnet 1 located in Availability Zone
+      1
     Type: String
   PublicSubnet2CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
     Default: 11.0.144.0/20
-    Description: CIDR Block for the public DMZ subnet 2 located in Availability Zone 2
+    Description: CIDR Block for the public DMZ subnet 2 located in Availability Zone
+      2
     Type: String
   PublicSubnet3CIDR:
-    Default: ""
-    Description: CIDR Block for the public DMZ subnet 3 located in Availability Zone 3
+    Default: ''
+    Description: CIDR Block for the public DMZ subnet 3 located in Availability Zone
+      3
     Type: String
   ADServer1InstanceType:
     AllowedValues:
@@ -235,11 +237,11 @@ Parameters:
     Description: Amazon EC2 instance type for the first Active Directory instance
     Type: String
   ADServer1NetBIOSName:
-    AllowedPattern: "[a-zA-Z0-9\\-]+"
+    AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: DC1
     Description: NetBIOS name of the first Active Directory server (up to 15 characters)
-    MaxLength: "15"
-    MinLength: "1"
+    MaxLength: '15'
+    MinLength: '1'
     Type: String
   ADServer1PrivateIP:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
@@ -266,11 +268,11 @@ Parameters:
     Description: Amazon EC2 instance type for the second Active Directory instance
     Type: String
   ADServer2NetBIOSName:
-    AllowedPattern: "[a-zA-Z0-9\\-]+"
+    AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: DC2
     Description: NetBIOS name of the second Active Directory server (up to 15 characters)
-    MaxLength: "15"
-    MinLength: "1"
+    MaxLength: '15'
+    MinLength: '1'
     Type: String
   ADServer2PrivateIP:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
@@ -279,62 +281,59 @@ Parameters:
       Availability Zone 2
     Type: String
   DataDriveSizeGiB:
-    Type: Number
-    Default: "10"
+    Type: 'Number'
+    Default: '10'
     Description: Size of Data Drive that contains SYSVOL and NTDS
   KeyPairName:
-    Description: Public/private key pairs allow you to securely connect to your
-      instance after it launches
+    Description: Public/private key pairs allow you to securely connect to your instance
+      after it launches
     Type: AWS::EC2::KeyPair::KeyName
   DomainAdminUser:
-    AllowedPattern: "[a-zA-Z0-9]*"
+    AllowedPattern: '[a-zA-Z0-9]*'
     Default: Admin
-    Description: User name for the account that will be added as Domain
-      Administrator. This is separate from the default "Administrator" account
-    MaxLength: "25"
-    MinLength: "5"
+    Description: User name for the account that will be added as Domain Administrator.
+      This is separate from the default "Administrator" account
+    MaxLength: '25'
+    MinLength: '5'
     Type: String
   DomainAdminPassword:
     AllowedPattern: (?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
     Description: Password for the domain admin user. Must be at least 8 characters
       containing letters, numbers and symbols
-    MaxLength: "32"
-    MinLength: "8"
-    NoEcho: "true"
+    MaxLength: '32'
+    MinLength: '8'
+    NoEcho: 'true'
     Type: String
   DomainDNSName:
-    AllowedPattern: "[a-zA-Z0-9\\-]+\\..+"
+    AllowedPattern: '[a-zA-Z0-9\-]+\..+'
     Default: example.com
     Description: Fully qualified domain name (FQDN) of the forest root domain e.g.
       example.com
-    MaxLength: "255"
-    MinLength: "2"
+    MaxLength: '255'
+    MinLength: '2'
     Type: String
   DomainNetBIOSName:
-    AllowedPattern: "[a-zA-Z0-9\\-]+"
+    AllowedPattern: '[a-zA-Z0-9\-]+'
     Default: example
-    Description: NetBIOS name of the domain (up to 15 characters) for users of
-      earlier versions of Windows e.g. EXAMPLE
-    MaxLength: "15"
-    MinLength: "1"
+    Description: NetBIOS name of the domain (up to 15 characters) for users of earlier
+      versions of Windows e.g. EXAMPLE
+    MaxLength: '15'
+    MinLength: '1'
     Type: String
   CreateDefaultOUs:
     AllowedValues:
-      - Yes
-      - No
-    Default: No
-    Description: Do you want Domain Elevated Accounts, Domain Users, Domain
-      Computers, Domain Servers, Domain Service Accounts, Domain Groups OUs
-      created
+      - 'Yes'
+      - 'No'
+    Default: 'No'
+    Description: Do you want Domain Elevated Accounts, Domain Users, Domain Computers, Domain Servers, Domain Service Accounts, Domain Groups OUs created
     Type: String
   PKI:
     AllowedValues:
-      - One-Tier
-      - Two-Tier
-      - No
-    Default: No
-    Description: Do you want to Deploy PKI Infrastructure if so what kind, Two Tier
-      or One Tier
+      - 'One-Tier'
+      - 'Two-Tier'
+      - 'No'
+    Default: 'No'
+    Description: Do you want to Deploy PKI Infrastructure if so what kind, Two Tier or One Tier
     Type: String
   CaServerInstanceType:
     AllowedValues:
@@ -349,71 +348,66 @@ Parameters:
     Description: Amazon EC2 instance type for the CA instance(s)
     Type: String
   CaDataDriveSizeGiB:
-    Type: Number
-    Default: "2"
+    Type: 'Number'
+    Default: '2'
     Description: Size of the Data Drive in GiB
   OrCaServerNetBIOSName:
-    AllowedPattern: "[a-zA-Z0-9\\-]+"
-    Description: NetBIOS name of the Offline Root CA server (Only Used For Two Tier
-      PKI) (up to 15 characters)
-    MaxLength: "15"
-    MinLength: "1"
+    AllowedPattern: '[a-zA-Z0-9\-]+'
+    Description: NetBIOS name of the Offline Root CA server (Only Used For Two Tier PKI) (up to 15 characters)
+    MaxLength: '15'
+    MinLength: '1'
     Type: String
     Default: ORCA1
   EntCaServerNetBIOSName:
-    AllowedPattern: "[a-zA-Z0-9\\-]+"
-    Description: NetBIOS name of the Enterprise Root or Subordinate CA server (up to
-      15 characters)
-    MaxLength: "15"
-    MinLength: "1"
+    AllowedPattern: '[a-zA-Z0-9\-]+'
+    Description: NetBIOS name of the Enterprise Root or Subordinate CA server (up to 15 characters)
+    MaxLength: '15'
+    MinLength: '1'
     Type: String
     Default: ENTCA1
   CaKeyLength:
     Description: CA Key Length
     AllowedValues:
-      - "2048"
-      - "4096"
-    Default: "2048"
+      - '2048'
+      - '4096'
+    Default: '2048'
     Type: String
   CaHashAlgorithm:
     Description: CA Hash Algorithm
     AllowedValues:
-      - SHA256
-      - SHA384
-      - SHA512
-    Default: SHA256
+      - 'SHA256'
+      - 'SHA384'
+      - 'SHA512'
+    Default: 'SHA256'
     Type: String
   OrCaValidityPeriodUnits:
-    Description: Offline Root CA Certificate Validity Period in Years (Only Used For
-      Two Tier PKI)
-    Default: "10"
+    Description: Offline Root CA Certificate Validity Period in Years (Only Used For Two Tier PKI)
+    Default: '10'
     Type: String
   CaValidityPeriodUnits:
     Description: Enterprise Root or Subordinate CA Certificate Validity Period in Years
-    Default: "5"
+    Default: '5'
     Type: String
   UseS3ForCRL:
     Description: Use S3 for Enterprise Root CA CRL location
     AllowedValues:
-      - Yes
-      - No
-    Default: No
+      - 'Yes'
+      - 'No'
+    Default: 'No'
     Type: String
   S3CRLBucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
     Default: examplebucket
-    Description: S3 bucket name for Enterprise Root CA CRL. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens
-      (-). It cannot start or end with a hyphen (-).
+    Description: S3 bucket name for Enterprise Root CA CRL. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).
     Type: String
   NumberOfRDGWHosts:
     AllowedValues:
-      - "0"
-      - "1"
-      - "2"
-      - "3"
-      - "4"
-    Default: "1"
+      - '0'
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+    Default: '1'
     Description: Enter the number of Remote Desktop Gateway hosts to create
     Type: String
   RDGWInstanceType:
@@ -440,166 +434,153 @@ Parameters:
   QSS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
     ConstraintDescription: Quick Start bucket name can include numbers, lowercase
-      letters, uppercase letters, and hyphens (-). It cannot start or end with a
-      hyphen (-).
+      letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen
+      (-).
     Default: aherrera116
     Description: S3 bucket name for the Quick Start assets. Quick Start bucket name
-      can include numbers, lowercase letters, uppercase letters, and hyphens
-      (-). It cannot start or end with a hyphen (-).
+      can include numbers, lowercase letters, uppercase letters, and hyphens (-).
+      It cannot start or end with a hyphen (-).
     Type: String
   QSS3BucketRegion:
     Default: us-west-1
-    Description: The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is
-      hosted. When using your own bucket, you must specify this value.
+    Description: The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.
     Type: String
   QSS3KeyPrefix:
     AllowedPattern: ^[0-9a-zA-Z-/]*$
-    ConstraintDescription: Quick Start key prefix can include numbers, lowercase
-      letters, uppercase letters, hyphens (-), and forward slash (/).
-    Default: microsoft-ad-main/
+    ConstraintDescription: Quick Start key prefix can include numbers, lowercase letters,
+      uppercase letters, hyphens (-), and forward slash (/).
+    Default: quickstart-microsoft-activedirectory/
     Description: S3 key prefix for the Quick Start assets. Quick Start key prefix
-      can include numbers, lowercase letters, uppercase letters, hyphens (-),
-      and forward slash (/).
+      can include numbers, lowercase letters, uppercase letters, hyphens (-), and
+      forward slash (/).
     Type: String
 Conditions:
-  UsingDefaultBucket:
-    - QSS3BucketName
-    - aherrera116
-  IncludeRDGW:
-    - - NumberOfRDGWHosts
-      - "0"
+  UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aherrera116']
+  IncludeRDGW: !Not
+    - !Equals
+      - !Ref NumberOfRDGWHosts
+      - '0'
 Rules:
   CheckSupportedInstances:
-    RuleCondition:
-      - - - t2.micro
-          - m4.large
-          - m4.xlarge
-          - m4.2xlarge
-          - m4.4xlarge
-        - ADServer1InstanceType
-      - - - t2.micro
-          - m4.large
-          - m4.xlarge
-          - m4.2xlarge
-          - m4.4xlarge
-        - ADServer2InstanceType
+    RuleCondition: !Or [!Contains [[t2.micro, m4.large, m4.xlarge, m4.2xlarge, m4.4xlarge],
+        !Ref 'ADServer1InstanceType'], !Contains [[t2.micro, m4.large, m4.xlarge, m4.2xlarge,
+          m4.4xlarge], !Ref 'ADServer2InstanceType']]
     Assertions:
-      - Assert:
-          - - - eu-west-3
-            - AWS::Region
+      - Assert: !Not [!Contains [[eu-west-3], !Ref 'AWS::Region']]
         AssertDescription: M4 instances are not available in the Paris region
   S3CRLBucketNameValidation:
-    RuleCondition:
-      - - UseS3ForCRL
-        - Yes
-      - - - PKI
-          - No
+    RuleCondition: !And
+      - !Equals
+        - !Ref UseS3ForCRL
+        - 'Yes'
+      - !Not 
+        - !Equals
+          - !Ref PKI
+          - 'No'
     Assertions:
       - AssertDescription: CRL BucketName cannot must be valid BucketName
-        Assert:
-          - - S3CRLBucketName
-            - examplebucket
+        Assert: !Not [!Equals [!Ref S3CRLBucketName, 'examplebucket']]
 Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL:
         Fn::Sub:
-          - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/microsoft-aws-vpc/templates/aws-vpc.yaml
-          - S3Region:
+          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/microsoft-aws-vpc/templates/aws-vpc.yaml'
+          - S3Region: !If
               - UsingDefaultBucket
-              - AWS::Region
-              - QSS3BucketRegion
-            S3Bucket:
+              - !Ref AWS::Region
+              - !Ref QSS3BucketRegion
+            S3Bucket: !If
               - UsingDefaultBucket
-              - ${QSS3BucketName}-${AWS::Region}
-              - QSS3BucketName
+              - !Sub '${QSS3BucketName}-${AWS::Region}'
+              - !Ref QSS3BucketName
       Parameters:
-        AvailabilityZones:
-          - ","
-          - AvailabilityZones
-        KeyPairName: KeyPairName
-        NumberOfAZs: NumberOfAZs
-        PrivateSubnet1ACIDR: PrivateSubnet1CIDR
-        PrivateSubnet2ACIDR: PrivateSubnet2CIDR
-        PublicSubnet1CIDR: PublicSubnet1CIDR
-        PublicSubnet2CIDR: PublicSubnet2CIDR
-        VPCCIDR: VPCCIDR
+        AvailabilityZones: !Join [',', !Ref 'AvailabilityZones']
+        KeyPairName: !Ref 'KeyPairName'
+        NumberOfAZs: !Ref 'NumberOfAZs'
+        PrivateSubnet1ACIDR: !Ref 'PrivateSubnet1CIDR'
+        PrivateSubnet2ACIDR: !Ref 'PrivateSubnet2CIDR'
+        PublicSubnet1CIDR: !Ref 'PublicSubnet1CIDR'
+        PublicSubnet2CIDR: !Ref 'PublicSubnet2CIDR'
+        VPCCIDR: !Ref 'VPCCIDR'
   ADStack:
+    DependsOn: VPCStack
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL:
         Fn::Sub:
-          - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/ad-1.yaml
-          - S3Region:
+          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/ad-1.yaml'
+          - S3Region: !If
               - UsingDefaultBucket
-              - AWS::Region
-              - QSS3BucketRegion
-            S3Bucket:
+              - !Ref AWS::Region
+              - !Ref QSS3BucketRegion
+            S3Bucket: !If
               - UsingDefaultBucket
-              - ${QSS3BucketName}-${AWS::Region}
-              - QSS3BucketName
+              - !Sub '${QSS3BucketName}-${AWS::Region}'
+              - !Ref QSS3BucketName
       Parameters:
-        VPCCIDR: VPCCIDR
-        VPCID: VPCStack.Outputs.VPCID
-        DHCPOptionSet: DHCPOptionSet
-        PrivateSubnet1ID: VPCStack.Outputs.PrivateSubnet1AID
-        PrivateSubnet2ID: VPCStack.Outputs.PrivateSubnet2AID
-        ADServer1InstanceType: ADServer1InstanceType
-        ADServer1NetBIOSName: ADServer1NetBIOSName
-        ADServer1PrivateIP: ADServer1PrivateIP
-        ADServer2InstanceType: ADServer2InstanceType
-        ADServer2NetBIOSName: ADServer2NetBIOSName
-        ADServer2PrivateIP: ADServer2PrivateIP
-        DataDriveSizeGiB: DataDriveSizeGiB
-        KeyPairName: KeyPairName
-        DomainAdminUser: DomainAdminUser
-        DomainAdminPassword: DomainAdminPassword
-        DomainDNSName: DomainDNSName
-        DomainNetBIOSName: DomainNetBIOSName
-        CreateDefaultOUs: CreateDefaultOUs
-        PKI: PKI
-        CaServerInstanceType: CaServerInstanceType
-        CaDataDriveSizeGiB: CaDataDriveSizeGiB
-        OrCaServerNetBIOSName: OrCaServerNetBIOSName
-        EntCaServerNetBIOSName: EntCaServerNetBIOSName
-        CaKeyLength: CaKeyLength
-        CaHashAlgorithm: CaHashAlgorithm
-        OrCaValidityPeriodUnits: OrCaValidityPeriodUnits
-        CaValidityPeriodUnits: CaValidityPeriodUnits
-        UseS3ForCRL: UseS3ForCRL
-        S3CRLBucketName: S3CRLBucketName
-        QSS3BucketName: QSS3BucketName
-        QSS3BucketRegion: QSS3BucketRegion
-        QSS3KeyPrefix: QSS3KeyPrefix
+        VPCCIDR: !Ref 'VPCCIDR'
+        VPCID: !GetAtt 'VPCStack.Outputs.VPCID'
+        DHCPOptionSet: !Ref 'DHCPOptionSet'
+        PrivateSubnet1ID: !GetAtt 'VPCStack.Outputs.PrivateSubnet1AID'
+        PrivateSubnet2ID: !GetAtt 'VPCStack.Outputs.PrivateSubnet2AID'
+        ADServer1InstanceType: !Ref 'ADServer1InstanceType'
+        ADServer1NetBIOSName: !Ref 'ADServer1NetBIOSName'
+        ADServer1PrivateIP: !Ref 'ADServer1PrivateIP'
+        ADServer2InstanceType: !Ref 'ADServer2InstanceType'
+        ADServer2NetBIOSName: !Ref 'ADServer2NetBIOSName'
+        ADServer2PrivateIP: !Ref 'ADServer2PrivateIP'
+        DataDriveSizeGiB: !Ref 'DataDriveSizeGiB'
+        KeyPairName: !Ref 'KeyPairName'
+        DomainAdminUser: !Ref 'DomainAdminUser'    
+        DomainAdminPassword: !Ref 'DomainAdminPassword'
+        DomainDNSName: !Ref 'DomainDNSName'
+        DomainNetBIOSName: !Ref 'DomainNetBIOSName'
+        CreateDefaultOUs: !Ref 'CreateDefaultOUs'
+        PKI: !Ref 'PKI'
+        CaServerInstanceType: !Ref 'CaServerInstanceType'
+        CaDataDriveSizeGiB: !Ref 'CaDataDriveSizeGiB'
+        OrCaServerNetBIOSName: !Ref 'OrCaServerNetBIOSName'
+        EntCaServerNetBIOSName: !Ref 'EntCaServerNetBIOSName'
+        CaKeyLength: !Ref 'CaKeyLength'
+        CaHashAlgorithm: !Ref 'CaHashAlgorithm'
+        OrCaValidityPeriodUnits: !Ref 'OrCaValidityPeriodUnits'
+        CaValidityPeriodUnits: !Ref 'CaValidityPeriodUnits'
+        UseS3ForCRL: !Ref 'UseS3ForCRL'
+        S3CRLBucketName: !Ref 'S3CRLBucketName'
+        QSS3BucketName: !Ref 'QSS3BucketName'
+        QSS3BucketRegion: !Ref 'QSS3BucketRegion'
+        QSS3KeyPrefix: !Ref 'QSS3KeyPrefix'
   RDGWStack:
+    DependsOn: ADStack
     Condition: IncludeRDGW
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL:
         Fn::Sub:
-          - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-microsoft-rdgateway/templates/rdgw-domain.yaml
-          - S3Region:
+          - 'https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/microsoft-rdgateway/templates/rdgw-domain.yaml'
+          - S3Region: !If
               - UsingDefaultBucket
-              - AWS::Region
-              - QSS3BucketRegion
-            S3Bucket:
+              - !Ref AWS::Region
+              - !Ref QSS3BucketRegion
+            S3Bucket: !If
               - UsingDefaultBucket
-              - ${QSS3BucketName}-${AWS::Region}
-              - QSS3BucketName
+              - !Sub '${QSS3BucketName}-${AWS::Region}'
+              - !Ref QSS3BucketName
       Parameters:
-        DomainAdminPassword: DomainAdminPassword
-        DomainAdminUser: DomainAdminUser
-        DomainDNSName: DomainDNSName
-        DomainMemberSGID: ADStack.Outputs.DomainMemberSGID
-        DomainNetBIOSName: DomainNetBIOSName
-        KeyPairName: KeyPairName
-        NumberOfRDGWHosts: NumberOfRDGWHosts
-        PublicSubnet1ID: VPCStack.Outputs.PublicSubnet1ID
-        PublicSubnet2ID: VPCStack.Outputs.PublicSubnet2ID
-        QSS3BucketName: QSS3BucketName
-        QSS3BucketRegion: QSS3BucketRegion
-        QSS3KeyPrefix: ${QSS3KeyPrefix}submodules/quickstart-microsoft-rdgateway/
-        RDGWInstanceType: RDGWInstanceType
-        RDGWCIDR: RDGWCIDR
-        VPCID: VPCStack.Outputs.VPCID
+        DomainAdminPassword: !Ref 'DomainAdminPassword'
+        DomainAdminUser: !Ref 'DomainAdminUser'
+        DomainDNSName: !Ref 'DomainDNSName'
+        DomainMemberSGID: !GetAtt 'ADStack.Outputs.DomainMemberSGID'
+        DomainNetBIOSName: !Ref 'DomainNetBIOSName'
+        KeyPairName: !Ref 'KeyPairName'
+        NumberOfRDGWHosts: !Ref 'NumberOfRDGWHosts'
+        PublicSubnet1ID: !GetAtt 'VPCStack.Outputs.PublicSubnet1ID'
+        PublicSubnet2ID: !GetAtt 'VPCStack.Outputs.PublicSubnet2ID'
+        QSS3BucketName: !Ref 'QSS3BucketName'
+        QSS3BucketRegion: !Ref 'QSS3BucketRegion'
+        QSS3KeyPrefix: !Sub '${QSS3KeyPrefix}submodules/microsoft-rdgateway/'
+        RDGWInstanceType: !Ref 'RDGWInstanceType'
+        RDGWCIDR: !Ref 'RDGWCIDR'
+        VPCID: !GetAtt 'VPCStack.Outputs.VPCID'
